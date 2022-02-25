@@ -21,9 +21,8 @@ if (!GITHUB_ID) {
 const router = new Router();
 
 router.get("/", (ctx: Context, _next) => {
-  ctx.response.body = "Hi";
-  ctx.response.type = "text/plain";
-  ctx.response.status = Status.OK;
+  ctx.response.redirect("https://youtube.com/watch?v=dQw4w9WgXcQ");
+  ctx.response.status = Status.PermanentRedirect;
 });
 
 router.get("/gist", async (ctx: Context) => {
