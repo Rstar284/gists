@@ -1,5 +1,5 @@
 import { Application, Router, Status } from "oak.js";
-const GITHUB_KEY = "ef879b5f60a060c100c99c24a02c659d541dd51f";
+const GITHUB_KEY = "YOUR_GITHUB_API_KEY";
 const router = new Router();
 router.get("/", (ctx, _next) => {
     ctx.response.body = "Hi";
