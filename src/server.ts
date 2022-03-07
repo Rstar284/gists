@@ -83,17 +83,15 @@ router.get("/discord", async (ctx: Context) => {
     return;
   }
   try {
-    const res = await fetch("https://discord.com/api/oauth2/token", {
+    const res = await fetch("https://discord.com/api/v9/oauth2/token", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: JSON.stringify({
         client_id: DISCORD_ID,
         client_secret: GITHUB_KEY,
         code: code,
-        redirect_uri: ctx.request.url.searchParams.get("uri"),
         grant_type: "authorization_code",
       }),
     });
