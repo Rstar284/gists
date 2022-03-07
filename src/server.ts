@@ -7,6 +7,8 @@ import {
 
 const GITHUB_KEY = Deno.env.get("GITHUB_KEY") || "";
 const GITHUB_ID = Deno.env.get("GITHUB_ID") || "";
+const DISCORD_KEY = Deno.env.get("DISCORD_KEY") || "";
+const DISCORD_ID = Deno.env.get("DISCORD_ID") || "";
 
 if (!GITHUB_KEY) {
   console.error("GITHUB_KEY not found");
@@ -18,6 +20,17 @@ if (!GITHUB_ID) {
   Deno.exit(1);
 }
 
+if(!DISCORD_KEY) {
+    console.error("DISCORD_KEY not found");
+    Deno.exit(1);
+}
+
+if(!DISCORD_ID) {
+    console.error("DISCORD_ID not found");
+    Deno.exit(1);
+}
+
+
 const router = new Router();
 
 router.get("/", (ctx: Context, _next) => {
@@ -25,7 +38,7 @@ router.get("/", (ctx: Context, _next) => {
   ctx.response.status = Status.PermanentRedirect;
 });
 
-router.get("/gist", async (ctx: Context) => {
+router.get("/gh", async (ctx: Context) => {
   const code = ctx.request.url.searchParams.get("code");
   if (!code) {
     ctx.response.status = Status.BadRequest;
@@ -62,6 +75,47 @@ router.get("/gist", async (ctx: Context) => {
     return;
   }
 });
+
+/*
+router.get("/discord", async (ctx: Context) => {
+  const code = ctx.request.url.searchParams.get("code");
+  if (!code) {
+    ctx.response.status = Status.BadRequest;
+    return;
+  }
+  try {
+    const res = await fetch("https://discord.com/api/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        client_id: DISCORD_ID,
+        client_secret: GITHUB_KEY,
+        code: code,
+        redirect_uri: ctx.request.url.searchParams.get("uri"),
+        grant_type: "authorization_code",
+      }),
+    });
+    if (res.status !== 200) {
+      ctx.response.status = Status.InternalServerError;
+      ctx.response.body = "Error getting access token, Error: " +
+        res.statusText;
+      return;
+    }
+    const json = await res.json();
+    ctx.response.body = json.access_token;
+    ctx.response.type = "text/plain";
+    ctx.response.status = Status.OK;
+  } catch (e) {
+    ctx.response.status = Status.InternalServerError;
+    ctx.response.body = e;
+    console.error(e);
+    return;
+  }
+});
+*/
 
 const app = new Application();
 app.use(router.routes());
