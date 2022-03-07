@@ -92,6 +92,7 @@ router.get("/discord", async (ctx: Context) => {
         client_id: DISCORD_ID,
         client_secret: GITHUB_KEY,
         code: code,
+        grant_type: "authorization_code",
         redirect_uri: "https://auth.rstar.ml/discord",
       }),
     });
