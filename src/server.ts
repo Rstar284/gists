@@ -76,7 +76,6 @@ router.get("/gh", async (ctx: Context) => {
   }
 });
 
-/*
 router.get("/discord", async (ctx: Context) => {
   const code = ctx.request.url.searchParams.get("code");
   if (!code) {
@@ -115,7 +114,6 @@ router.get("/discord", async (ctx: Context) => {
     return;
   }
 });
-*/
 
 const app = new Application();
 app.use(router.routes());
